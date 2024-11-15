@@ -4,7 +4,11 @@ import Layout from "@/components/Layout";
 import routes from "@/routes";
 
 const App = (): JSX.Element => {
-  return <Layout>{routes}</Layout>;
+  return (
+    <div style={{ backgroundColor: '#1E1E2C', minHeight: '100vh' }}>
+      <Layout>{routes}</Layout>
+    </div>
+  );
 };
 
 export default App;
