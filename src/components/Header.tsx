@@ -93,7 +93,7 @@ const Header = () => {
                 </button>
                 <button className="icon-button">
                     <img src={MoonIcon} alt="Dark Mode" />
-                </button>
+                </button>   
                 <button className="icon-button">
                     <img src={NotificationIcon} alt="Notifications" />
                 </button>

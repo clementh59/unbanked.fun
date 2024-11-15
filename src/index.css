@@ -1,0 +1,21 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.icon-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: none; /* Remove background */
+    border: none; /* Remove border */
+    cursor: pointer;
+    padding: 0; /* Remove padding */
+}
+
+.icon-button img {
+    width: 20px;
+    height: 20px;
+}
