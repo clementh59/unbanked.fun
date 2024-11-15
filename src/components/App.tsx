@@ -8,7 +8,7 @@ import "@/index.css";
 
 const App = (): JSX.Element => {
   return (
-    <div style={{ backgroundColor: '#1E1E2C', minHeight: '100vh' }}>
+    <div style={{ minHeight: '100vh' }}>
       <Layout>{routes}</Layout>
     </div>
   );

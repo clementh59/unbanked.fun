@@ -13,7 +13,7 @@ import { removeStorageWhenDisconnecting, setStorageWhenConnecting } from '@/util
 import { showToast } from '@/utils/toast.util';
 
 // Import icons from assets
-import { SearchIcon, MoonIcon, NotificationIcon, RefreshCircleIcon } from '@/assets';
+import { SearchIcon, MoonIcon, NotificationIcon, RefreshCircleIcon, ClockIcon } from '@/assets';
 
 const accessCode = '123456';
 
@@ -80,32 +80,32 @@ const Header = () => {
     };
 
     return (
-        <Row className="p-4 justify-between items-center" style={{ width: '100vw', backgroundColor: '#101828', display: 'flex', alignItems: 'center' }}>
+        <Row className="header-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
             {/* Logo */}
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#ffffff' }}>
-                Unbanked.fun
-            </div>
-
-            {/* Centered Icons */}
-            <div className="flex items-center gap-4">
-                <button className="icon-button">
-                    <img src={SearchIcon} alt="Search" />
-                </button>
-                <button className="icon-button">
-                    <img src={MoonIcon} alt="Dark Mode" />
-                </button>   
-                <button className="icon-button">
-                    <img src={NotificationIcon} alt="Notifications" />
-                </button>
-                <button className="icon-button">
-                    <img src={RefreshCircleIcon} alt="Settings" />
-                </button>
+            <div>
+                {/* Clock Icon and Last Update Text */}
+                <div className="flex items-center gap-1" style={{ color: '#A3AED0', fontSize: '0.875rem', display: 'flex', flexDirection: 'row' }}>
+                    <img src={ClockIcon} alt="Clock" className="icon-image" style={{ width: '16px', height: '16px', marginRight: '8px' }} />
+                    <span>Last update 40m ago</span>
+                </div>
             </div>
 
             {/* Wallet Info and Connect Button */}
-            <div className="flex items-center gap-4">
-                <span style={{ color: '#A3AED0', fontSize: '0.875rem' }}>Last update 40m ago</span>
+            <div className="flex items-center gap-4" style={{ display: 'flex', flexDirection: 'row' }}>
                 
+{/* Centered Icons in a Row */}
+<div className="flex items-center gap-4" style={{ display: 'flex', flexDirection: 'row' }}>
+                <button className="icon-button">
+                    <img src={MoonIcon} alt="Dark Mode" className="icon-image" />
+                </button>   
+                <button className="icon-button">
+                    <img src={NotificationIcon} alt="Notifications" className="icon-image" />
+                </button>
+                <button className="icon-button">
+                    <img src={RefreshCircleIcon} alt="Settings" className="icon-image" />
+                </button>
+            </div>
+                {/* Connect Button */}
                 {wallet ? (
                     <div className="flex items-center gap-2 bg-[#1C2536] px-3 py-1 rounded-full">
                         <span style={{ color: '#ffffff' }}>
