@@ -11,9 +11,11 @@ import { apiServices } from 'otomato-sdk';
 import { get } from 'lodash';
 import { removeStorageWhenDisconnecting, setStorageWhenConnecting } from '@/utils/storage.util';
 import { showToast } from '@/utils/toast.util';
+import { shortenAddress } from 'thirdweb/utils';
+import Button from '@/components/buttons/button';
 
 // Import icons from assets
-import { SearchIcon, MoonIcon, NotificationIcon, RefreshCircleIcon, ClockIcon } from '@/assets';
+import { SearchIcon, MoonIcon, NotificationIcon, RefreshCircleIcon, ClockIcon, IconChevronDown, IconWallet } from '@/assets';
 
 const accessCode = '123456';
 
@@ -82,19 +84,13 @@ const Header = () => {
     return (
         <Row className="header-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
             {/* Logo */}
-            <div>
-                {/* Clock Icon and Last Update Text */}
-                <div className="flex items-center gap-1" style={{ color: '#A3AED0', fontSize: '0.875rem', display: 'flex', flexDirection: 'row' }}>
-                    <img src={ClockIcon} alt="Clock" className="icon-image" style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-                    <span>Last update 40m ago</span>
-                </div>
+            <div className="flex items-center gap-1" style={{ color: '#A3AED0', fontSize: '0.875rem' }}>
+                <img src={ClockIcon} alt="Clock" style={{ width: '16px', height: '16px', marginRight: '8px' }} />
+                <span>Last update 40m ago</span>
             </div>
 
-            {/* Wallet Info and Connect Button */}
+            {/* Centered Icons in a Row */}
             <div className="flex items-center gap-4" style={{ display: 'flex', flexDirection: 'row' }}>
-                
-{/* Centered Icons in a Row */}
-<div className="flex items-center gap-4" style={{ display: 'flex', flexDirection: 'row' }}>
                 <button className="icon-button">
                     <img src={MoonIcon} alt="Dark Mode" className="icon-image" />
                 </button>   
@@ -105,38 +101,42 @@ const Header = () => {
                     <img src={RefreshCircleIcon} alt="Settings" className="icon-image" />
                 </button>
             </div>
-                {/* Connect Button */}
-                {wallet ? (
-                    <div className="flex items-center gap-2 bg-[#1C2536] px-3 py-1 rounded-full">
-                        <span style={{ color: '#ffffff' }}>
-                            {wallet.address ? `${wallet.address.slice(0, 6)}...${wallet.address.slice(-4)}` : ''}
-                        </span>
-                        <img src="/icons/user-profile.svg" alt="User Profile" className="rounded-full w-8 h-8" />
-                    </div>
-                ) : (
-                    <ConnectButton
-                        theme="dark"
-                        client={client}
-                        wallets={wallets}
-                        chain={base}
-                        accountAbstraction={{
-                            chain: base,
-                            sponsorGas: true,
-                        }}
-                        signInButton={{
-                            label: 'Sign In',
-                            className: 'header-sign-in-button',
-                        }}
-                        connectModal={{
-                            title: 'Connect Wallet',
-                            size: 'wide',
-                            titleIcon: '',
-                        }}
-                        onConnect={onConnectWallet}
-                        onDisconnect={onLogout}
-                        showAllWallets={false}
-                    />
-                )}
+
+            {/* Wallet Info and Connect Button */}
+            <div className="flex items-center gap-4">
+                <ConnectButton
+                    theme="dark"
+                    client={client}
+                    wallets={wallets}
+                    chain={base}
+                    accountAbstraction={{
+                        chain: base,
+                        sponsorGas: true,
+                    }}
+                    connectButton={{
+                        label: (
+                            <Button className="header-connect-group flex items-center gap-2" style={{ display: 'flex', alignItems: 'center', padding: '8px 16px', borderRadius: '8px', backgroundColor: '#1C2536' }}>
+                                {wallet?.address ? (
+                                    <>
+                                        <img src={IconWallet} alt="wallet-icon" style={{ width: '16px', height: '16px', marginRight: '8px' }} />
+                                        <span>{shortenAddress(wallet.address)}</span>
+                                    </>
+                                ) : (
+                                    'Connect Wallet'
+                                )}
+                                <IconChevronDown style={{ marginLeft: '8px' }} />
+                            </Button>
+                        ),
+                        className: 'header-connect-button',
+                    }}
+                    connectModal={{
+                        title: 'Connect Wallet',
+                        size: 'wide',
+                    }}
+                    onConnect={onConnectWallet}
+                    onDisconnect={onLogout}
+                    showAllWallets={false}
+                />
             </div>
         </Row>
     );
