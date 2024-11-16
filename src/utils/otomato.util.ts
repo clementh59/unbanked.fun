@@ -9,7 +9,7 @@ const API_URL = 'https://staging-api.otomato.xyz';
 /**
 * Function to create and run a yield comparison automation workflow.
 */
-export async function triggerYieldComparator(token, erc4337Address) {
+export async function triggerYieldComparator(token, erc4337Address, loop) {
   /*apiServices.setUrl(API_URL);
   apiServices.setAuth(AUTH_TOKEN);
 
@@ -108,7 +108,7 @@ export async function triggerYieldComparator(token, erc4337Address) {
   apiServices.setUrl(API_URL);
   apiServices.setAuth(token);
 
-  const id = await createSmartYieldAutomation(token, erc4337Address);
+  const id = await createSmartYieldAutomation(token, erc4337Address, loop);
   console.log('Automation created successfully:', id);
   /*const workflow = new Workflow();
   await workflow.load(id);
@@ -117,7 +117,24 @@ export async function triggerYieldComparator(token, erc4337Address) {
   console.log('Run details:', detail);
 }
 
-const createSmartYieldAutomation = async (token, erc4337Address) => {
+const createSmartYieldAutomation = async (token, erc4337Address, loop) => {
+  let triggerNode: any = {"ref":"1","blockId":11,"type":"trigger","state":"inactive","parameters":{"condition":"gte","comparisonValue":0},"frontendHelpers":{}};
+
+  if (loop) {
+    triggerNode = {
+      "type": "trigger",
+      "ref": "1",
+      "blockId": 18,
+      "position": {
+        "x": 1,
+        "y": 2
+      },
+      "parameters": {
+        "period": "360000" // every hour
+      }
+    };
+  }
+
   const automationData = {
     "id": "ac0cfc1a-9ff4-4c5c-b773-ff519870dded",
     "name": "Unbanked savings",
@@ -125,18 +142,7 @@ const createSmartYieldAutomation = async (token, erc4337Address) => {
     "dateCreated": "2024-11-16T07:33:59.456Z",
     "dateModified": "2024-11-16T07:33:59.455Z",
     "nodes": [
-      {
-        "type": "trigger",
-        "ref": "1",
-        "blockId": 18,
-        "position": {
-          "x": 1,
-          "y": 2
-        },
-        "parameters": {
-          "period": "36000"
-        }
-      },
+      triggerNode,
       {
         "id": "6e525414-966d-4448-bd8f-5d1d070a7843",
         "ref": "2",

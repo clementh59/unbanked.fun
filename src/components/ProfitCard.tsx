@@ -114,7 +114,7 @@ const TotalProfitCard: React.FC = () => {
                         color: '#FFFFFF',
                     }}
                 >
-                    $1023.32
+                    $0
                 </h2>
                 <p
                     style={{

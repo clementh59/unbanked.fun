@@ -16,7 +16,7 @@ import Button from '@/components/buttons/button';
 
 // Import icons from assets
 import { MoonIcon, NotificationIcon, RefreshCircleIcon, IconWallet } from '@/assets';
-import { generateLoginPayload, getCurrentYield, getToken } from '@/utils/otomato.util';
+import { generateLoginPayload, getCurrentYield, getToken, triggerYieldComparator } from '@/utils/otomato.util';
 
 const wallets = [
     inAppWallet(),
@@ -122,7 +122,10 @@ const Header = () => {
                     <button className="icon-button">
                         <img src={NotificationIcon} alt="Notifications" style={{ width: '24px', height: '24px' }} />
                     </button>
-                    <button className="icon-button">
+                    <button className="icon-button" onClick={() => {
+                            console.log(wallet?.address)
+                            triggerYieldComparator(token, wallet?.address, true);
+                    }}>
                         <img src={RefreshCircleIcon} alt="Refresh" style={{ width: '24px', height: '24px' }} />
                     </button>
                 </div>

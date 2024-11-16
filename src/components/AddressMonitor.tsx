@@ -44,12 +44,12 @@ const AddressMonitor: React.FC = ({ children }) => {
 
     const automationIsSetUp = await isTheSmartYieldAlreadySetUpForThisWallet(token);
     if (!automationIsSetUp) {
-      await triggerYieldComparator(token, activeAccount?.address);
+      await triggerYieldComparator(token, activeAccount?.address, true);
     } else {
       console.log('Automation is already set up');
     }
 
-    await analyzeLatestDeposits(token);
+    // await analyzeLatestDeposits(token);
   };
 
 
