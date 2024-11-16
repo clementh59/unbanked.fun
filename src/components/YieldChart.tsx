@@ -9,15 +9,18 @@ import {
   Tooltip,
   Filler,
 } from "chart.js";
+import { useStore } from "@/hooks/useStore";
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Filler);
 
 const AllYieldChart: React.FC = () => {
+  const yieldData = useStore((state) => state.yield); // Use `yieldData` to avoid reserved keywords
+
   // Hardcoded yield data
   const generateYieldData = () => {
     return {
-      aave: [8, 14, 7, 6, 7, 4], // AAVE yields in percentages
-      ionic: [4, 5, 6, 12, 6, 8], // IONIC yields in percentages
+      aave: [8, 14, 7, 6, 7, 4, yieldData.aaveYield], // AAVE yields in percentages
+      ionic: [4, 5, 6, 12, 6, 8, yieldData.ionicYield], // IONIC yields in percentages
     };
   };
 
