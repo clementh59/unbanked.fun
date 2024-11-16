@@ -197,14 +197,14 @@ const Header = () => {
                       <span>{shortenAddress(wallet.address)}</span>
                     </>
                   ) : (
-                    "Connect Wallet"
+                    "Connect"
                   )}
                 </Button>
               ),
               className: "header-connect-button !p-0 !bg-transparent !m-0", // Reset padding, margin, and background
             }}
             connectModal={{
-              title: "Connect Wallet",
+              title: "Connect",
               size: "wide",
             }}
             onConnect={onConnectWallet}
