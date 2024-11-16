@@ -2,7 +2,6 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { createThirdwebClient, getContract } from 'thirdweb';
 import { getBalance } from 'thirdweb/extensions/erc20';
 import { base } from 'thirdweb/chains';
-import { useAddress } from "@thirdweb-dev/react";
 import { useStore } from './useStore';
 
 const client = createThirdwebClient({ clientId: 'd0ce057c3d99f4415d5720cca00ac5fe' });

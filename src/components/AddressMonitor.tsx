@@ -28,7 +28,7 @@ const AddressMonitor: React.FC<AddressMonitorProps> = ({ children }) => {
     try {
       const targetApproved = isTargetApproved(token);
       if (!targetApproved) {
-        await approveTarget(token);
+        await approveTarget();
         markTargetAsApproved(token);
       } else {
         console.log(`Target for ${token} is already approved.`);
@@ -65,7 +65,7 @@ const AddressMonitor: React.FC<AddressMonitorProps> = ({ children }) => {
     localStorage.setItem("approvedTargets", JSON.stringify(approvedTargets));
   };
 
-  const approveTarget = async (token: string) => {
+  const approveTarget = async () => {
     if (!activeAccount) {
       console.error("No active account found");
       return;

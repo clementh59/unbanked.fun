@@ -5,6 +5,7 @@ import { formatMoneyToNumber } from "@/utils/format.util";
 import { showToast } from "@/utils/toast.util";
 import { transfer } from 'thirdweb/extensions/erc20'
 import { base } from "thirdweb/chains";
+import { Account } from "thirdweb/wallets";
 
 interface DepositOverlayProps {
     onClose: () => void;
@@ -112,7 +113,7 @@ const DepositOverlay: React.FC<DepositOverlayProps> = ({ onClose, defaultAmount 
 };
 
 // Styling objects
-const overlayStyle = {
+const overlayStyle : React.CSSProperties = {
     position: "fixed",
     top: 0,
     left: 0,
@@ -125,7 +126,7 @@ const overlayStyle = {
     zIndex: 1000,
 };
 
-const modalStyle = {
+const modalStyle: React.CSSProperties = {
     backgroundColor: "#1C2536",
     borderRadius: "12px",
     padding: "20px",
@@ -169,12 +170,12 @@ const tokenImageStyle = {
     borderRadius: "8px",
 };
 
-const tokenDetailsStyle = {
+const tokenDetailsStyle : React.CSSProperties = {
     flex: 1,
     textAlign: "right",
 };
 
-const inputStyle = {
+const inputStyle : React.CSSProperties = {
     width: "100%",
     padding: "12px 8px",
     fontSize: "1rem",
