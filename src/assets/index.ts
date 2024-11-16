@@ -6,6 +6,7 @@ import WalletMinusIcon from './wallet-minus.png';
 import DepositIcon from './deposit.png';
 import SettingsIcon from './setting.png';
 import LogoIcon from './Logo.png';
+import BigLogo from './bigLogo.png';
 import HomeIcon from './home.png';
 import SearchIcon from './search.png';
 import IconWallet from './ic-wallet.svg';
@@ -21,5 +22,6 @@ export {
   HomeIcon,
   WalletMinusIcon,
   SettingsIcon,
-  DepositIcon
+  DepositIcon,
+  BigLogo
 };

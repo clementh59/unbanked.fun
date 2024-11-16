@@ -15,7 +15,13 @@ import { shortenAddress } from "thirdweb/utils";
 import Button from "@/components/buttons/button";
 
 // Import icons from assets
-import { MoonIcon, NotificationIcon, RefreshCircleIcon, IconWallet } from "@/assets";
+import {
+  MoonIcon,
+  NotificationIcon,
+  RefreshCircleIcon,
+  IconWallet,
+  BigLogo,
+} from "@/assets";
 import {
   generateLoginPayload,
   getCurrentYield,
@@ -116,7 +122,7 @@ const Header = () => {
         padding: "0", // Add padding to match the page
       }}
     >
-      {/* Left Section: "Overview" */}
+      {/* Left Section: BigLogo */}
       <div
         style={{
           display: "flex",
@@ -124,7 +130,11 @@ const Header = () => {
           gap: "16px",
         }}
       >
-        <h1 style={{ fontSize: "1.5rem", color: "#ffffff", margin: 0 }}>Overview</h1>
+        <img
+          src={BigLogo}
+          alt="Unbanked.fun Logo"
+          style={{ height: "75px", marginTop: '-12px' }}
+        />
       </div>
 
       {/* Right Section: Icons and Connect Button */}
