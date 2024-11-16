@@ -121,69 +121,185 @@ export async function triggerYieldComparator() {
   apiServices.setUrl(API_URL);
   apiServices.setAuth(AUTH_TOKEN);
 
-  const id = await createAutomation();
+  const id = await createSmartYieldAutomation();
   console.log('Automation created successfully:', id);
   /*const workflow = new Workflow();
   await workflow.load(id);
   await workflow.run();*/
-  const detail = await getWorkflowDetails(id)
-  console.log('Workflow details:', detail);
+  const detail = await runWorkflow(id);
+  console.log('Run details:', detail);
 }
 
-const createAutomation = async () => {
+const createSmartYieldAutomation = async () => {
   const automationData = {
-    "name": "Ionic Trigger Lending",
+    "id": "ac0cfc1a-9ff4-4c5c-b773-ff519870dded",
+    "name": "Unbanked savings",
+    "executionId": "9e4d3bdb-aa6f-4f76-aff7-6959f00d3a70",
+    "dateCreated": "2024-11-16T07:33:59.456Z",
+    "dateModified": "2024-11-16T07:33:59.455Z",
     "nodes": [
       {
-        "ref": "2",
-        "blockId": 100021,
-        "type": "action",
+        "type": "trigger",
+        "ref": "1",
+        "blockId": 18,
         "position": {
-          "x": 0,
-          "y": 200
+          "x": 1,
+          "y": 2
         },
+        "parameters": {
+          "period": "15000"
+        }
+      },
+      {
+        "id": "6e525414-966d-4448-bd8f-5d1d070a7843",
+        "ref": "2",
+        "blockId": 100016,
+        "executionId": "ecb4034c-6b16-4af4-8adb-d62d526508af",
+        "type": "action",
+        "position": null,
+        "parameters": {
+          "logic": "or",
+          "groups": [
+            {
+              "logic": "or",
+              "checks": [
+                {
+                  "value1": "{{external.functions.ionicLendingRate(8453,0x833589fcd6edb6e08f4c7c32d4f71b54bda02913)}}",
+                  "value2": "{{external.functions.aaveLendingRate(0xA238Dd80C259a72e81d7e4664a9801593F98d1c5,8453,0x833589fcd6edb6e08f4c7c32d4f71b54bda02913)}}",
+                  "condition": "gt"
+                }
+              ]
+            }
+          ]
+        },
+        "dateCreated": "2024-11-16T07:33:59.460494+00:00",
+        "dateModified": "2024-11-16T07:33:59.460494+00:00",
+        "state": "inactive"
+      },
+      {
+        "id": "f4623ee1-b7cb-4038-af4c-4d9389f6c93d",
+        "ref": "3",
+        "blockId": 100006,
+        "executionId": "9b3527ea-dac3-41f3-8935-24624ca5e072",
+        "type": "action",
+        "position": null,
         "parameters": {
           "abi": {
             "parameters": {
-              "to": "0x8e379aD0090f45a53A08007536cE2fa0a3F9F93d",
+              "amount": "{{external.functions.erc20Balance(8453,0x757A004bE766f745fd4CD75966CF6C8Bb84FD7c1,0x833589fcd6edb6e08f4c7c32d4f71b54bda02913,,)}}"
+            }
+          },
+          "chainId": 8453,
+          "tokenToDeposit": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        "dateCreated": "2024-11-16T07:33:59.460494+00:00",
+        "dateModified": "2024-11-16T07:33:59.460494+00:00",
+        "state": "inactive"
+      },
+      {
+        "id": "8f8460e1-2cb1-4129-a0f6-7ee103febf83",
+        "ref": "4",
+        "blockId": 100007,
+        "executionId": "7d0b074a-089e-48bb-9399-abedb85fb2a7",
+        "type": "action",
+        "position": null,
+        "parameters": {
+          "abi": {
+            "parameters": {
+              "amount": "115792089237316195423570985008687907853269984665640564039457584007913129639935n"
+            }
+          },
+          "chainId": 8453,
+          "tokenToWithdraw": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        },
+        "dateCreated": "2024-11-16T07:33:59.460494+00:00",
+        "dateModified": "2024-11-16T07:33:59.460494+00:00",
+        "state": "inactive"
+      },
+      {
+        "id": "a3b45d46-b6fc-4be7-abe5-2b62705b6c26",
+        "ref": "5",
+        "blockId": 100020,
+        "executionId": "40bb0e85-697b-48b5-966f-bce45246d3fc",
+        "type": "action",
+        "position": null,
+        "parameters": {
+          "abi": {
+            "parameters": {
               "asset": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
-              "amount": "12n"
+              "amount": "{{external.functions.erc20Balance(8453,0x757A004bE766f745fd4CD75966CF6C8Bb84FD7c1,0x833589fcd6edb6e08f4c7c32d4f71b54bda02913,,)}}",
+              "onBehalfOf": "0x757A004bE766f745fd4CD75966CF6C8Bb84FD7c1",
+              "referralCode": 0
+            }
+          },
+          "chainId": 8453,
+          "contractAddress": "0xA238Dd80C259a72e81d7e4664a9801593F98d1c5"
+        },
+        "dateCreated": "2024-11-16T07:33:59.460494+00:00",
+        "dateModified": "2024-11-16T07:33:59.460494+00:00",
+        "state": "inactive"
+      },
+      {
+        "id": "12a87a18-dc15-496c-8982-6850befe69c6",
+        "ref": "6",
+        "blockId": 100021,
+        "executionId": "e81dcb45-e7ba-40cb-95ee-9481421e236b",
+        "type": "action",
+        "position": null,
+        "parameters": {
+          "abi": {
+            "parameters": {
+              "to": "0x757A004bE766f745fd4CD75966CF6C8Bb84FD7c1",
+              "asset": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+              "amount": "115792089237316195423570985008687907853269984665640564039457584007913129639935n"
             }
           },
           "chainId": 8453,
           "contractAddress": null
         },
-        "dateCreated": "2024-11-15T02:32:00.078814+00:00",
-        "dateModified": "2024-11-15T02:32:00.078814+00:00",
-        "state": "inactive"
-      },
-      {
-        "id": "f6c610bd-c22d-4ea4-b45a-a31339dfdd2c",
-        "ref": "1",
-        "blockId": 15,
-        "executionId": "89f4d620-4c47-4f24-9c6d-45ac776235aa",
-        "type": "trigger",
-        "position": null,
-        "parameters": {
-          "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
-          "chainId": 8453,
-          "condition": "gt",
-          "comparisonValue": 0.1
-        },
-        "dateCreated": "2024-11-15T02:32:00.078814+00:00",
-        "dateModified": "2024-11-15T02:32:00.078814+00:00",
+        "dateCreated": "2024-11-16T07:33:59.460494+00:00",
+        "dateModified": "2024-11-16T07:33:59.460494+00:00",
         "state": "inactive"
       }
     ],
     "edges": [
       {
-        "id": "d2a3c222-fcfe-4cb8-824e-09d7091d8b12",
+        "id": "0f067307-e5fa-40de-8efe-8fd66b386510",
+        "source": "2",
+        "target": "6",
+        "value": "false",
+        "label": "false"
+      },
+      {
+        "id": "55f78493-ae89-47c4-992b-b42bbb05e1a1",
+        "source": "6",
+        "target": "3",
+        "value": null,
+        "label": null
+      },
+      {
+        "id": "83540fb2-32de-4862-900b-faa6443fde78",
+        "source": "4",
+        "target": "5",
+        "value": null,
+        "label": null
+      },
+      {
+        "id": "ed970d2b-d15e-42c6-b571-4ca0a276c1fb",
         "source": "1",
         "target": "2",
         "value": null,
         "label": null
+      },
+      {
+        "id": "f3e52889-4a70-4737-a21d-8d1730eb06ce",
+        "source": "2",
+        "target": "4",
+        "value": "true",
+        "label": "true"
       }
     ],
+    "state": "failed"
   }
 
   const url = API_URL + '/api/workflows/';
@@ -203,29 +319,101 @@ const createAutomation = async () => {
   }
 }
 
-export async function getWorkflowDetails(workflowId: String) {
-  const url = `https://staging-api.otomato.xyz/api/workflows/${workflowId}`;
+const runWorkflow = async (id: String) => {
+  const url = `${API_URL}/api/workflows/${id}/run`;
+
   const headers = {
-      'Authorization': AUTH_TOKEN,
-      'Content-Type': 'application/json',
+    Authorization: AUTH_TOKEN,
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
   };
 
   try {
-      const response = await fetch(url, {
-          method: 'GET',
-          headers: headers,
-      });
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: headers,
+    });
 
-      if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(`Error: ${errorData.message || 'Failed to fetch workflow details'}`);
-      }
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(`Error running workflow: ${errorData.message || 'Unknown error'}`);
+    }
 
-      const result = await response.json();
-      console.log('Workflow details retrieved successfully:', result);
-      return result;
+    const result = await response.json();
+    return result;
   } catch (error) {
-      console.error('Error fetching workflow details:', error);
-      throw error;
+    console.error('Error running workflow:', error);
+    throw error;
+  }
+};
+
+export async function getWorkflowDetails(workflowId: String) {
+  const url = `https://staging-api.otomato.xyz/api/workflows/${workflowId}`;
+  const headers = {
+    'Authorization': AUTH_TOKEN,
+    'Content-Type': 'application/json',
+  };
+
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: headers,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(`Error: ${errorData.message || 'Failed to fetch workflow details'}`);
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error('Error fetching workflow details:', error);
+    throw error;
+  }
+}
+
+export async function getLastExecution() {
+  const url = `${API_URL}/api/executions`;
+
+  const headers = {
+    Authorization: AUTH_TOKEN,
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  };
+
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: headers,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(`Error fetching executions: ${errorData.message || 'Unknown error'}`);
+    }
+
+    const result = await response.json();
+
+    if (result && result.length > 0) {
+      return result[0]; // Return the most recent execution
+    } else {
+      throw new Error('No executions found');
+    }
+  } catch (error) {
+    console.error('Error fetching last execution:', error);
+    throw error;
+  }
+}
+
+export const isTheSmartYieldAlreadySetUpForThisWallet = async () => {
+  try {
+    const lastExecution = await getLastExecution();
+    const workflow = await getWorkflowDetails(lastExecution.workflow.id);
+    if (workflow.name !== 'Unbanked savings')
+      return false;
+    return true;
+  } catch (e) {
+    return false;
   }
 }
