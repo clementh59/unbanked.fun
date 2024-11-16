@@ -82,80 +82,98 @@ const Header = () => {
     };
 
     return (
-        <Row className="header-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-            {/* Logo */}
-            <div className="flex items-center gap-1" style={{ color: '#A3AED0', fontSize: '0.875rem' }}>
-                <img src={ClockIcon} alt="Clock" style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-                <span>Last update 40m ago</span>
+        <Row
+            className="header-container"
+            style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: '100%',
+                padding: '0', // Add padding to match the page
+            }}
+        >
+            {/* Left Section: "Overview" */}
+            <div
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '16px',
+                }}
+            >
+                <h1 style={{ fontSize: '1.5rem', color: '#ffffff', margin: 0 }}>Overview</h1>
             </div>
 
-            {/* Centered Icons in a Row */}
-            <div className="flex items-center gap-4" style={{ display: 'flex', flexDirection: 'row' }}>
-                <button className="icon-button">
-                    <img src={MoonIcon} alt="Dark Mode" className="icon-image" />
-                </button>
-                <button className="icon-button">
-                    <img src={NotificationIcon} alt="Notifications" className="icon-image" />
-                </button>
-                <button className="icon-button">
-                    <img src={RefreshCircleIcon} alt="Settings" className="icon-image" />
-                </button>
-            </div>
+            {/* Right Section: Icons and Connect Button */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                {/* Icons */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <button className="icon-button">
+                        <img src={MoonIcon} alt="Dark Mode" style={{ width: '24px', height: '24px' }} />
+                    </button>
+                    <button className="icon-button">
+                        <img src={NotificationIcon} alt="Notifications" style={{ width: '24px', height: '24px' }} />
+                    </button>
+                    <button className="icon-button">
+                        <img src={RefreshCircleIcon} alt="Refresh" style={{ width: '24px', height: '24px' }} />
+                    </button>
+                </div>
 
-            {/* Wallet Info and Connect Button */}
-            <div className="flex items-center gap-4">
-                <ConnectButton
-                    client={client}
-                    wallets={wallets}
-                    chain={base}
-                    accountAbstraction={{
-                        chain: base,
-                        sponsorGas: true,
-                    }}
-                    connectButton={{
-                        label: (
-                            <Button
-                                className="header-connect-group flex items-center gap-2"
-                                style={{
-                                    backgroundColor: '#1C2536',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    padding: '8px 16px', // Set custom padding
-                                    borderRadius: '8px',
-                                    color: '#ffffff',
-                                    fontSize: '0.875rem',
-                                    fontWeight: '500',
-                                    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
-                                }}
-                            >
-                                {wallet?.address ? (
-                                    <>
-                                        <img
-                                            src={IconWallet}
-                                            alt="wallet-icon"
-                                            style={{
-                                                width: '16px',
-                                                height: '16px',
-                                                marginRight: '8px',
-                                            }}
-                                        />
-                                        <span>{shortenAddress(wallet.address)}</span>
-                                    </>
-                                ) : (
-                                    'Connect Wallet'
-                                )}
-                            </Button>
-                        ),
-                        className: 'header-connect-button !p-0 !bg-transparent !m-0', // Reset padding, margin, and background
-                    }}
-                    connectModal={{
-                        title: 'Connect Wallet',
-                        size: 'wide',
-                    }}
-                    onConnect={onConnectWallet}
-                    onDisconnect={onLogout}
-                    showAllWallets={false}
-                />
+
+                {/* Wallet Info and Connect Button */}
+                <div className="flex items-center gap-4">
+                    <ConnectButton
+                        client={client}
+                        wallets={wallets}
+                        chain={base}
+                        accountAbstraction={{
+                            chain: base,
+                            sponsorGas: true,
+                        }}
+                        connectButton={{
+                            label: (
+                                <Button
+                                    className="header-connect-group flex items-center gap-2"
+                                    style={{
+                                        backgroundColor: '#1C2536',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        padding: '8px 16px', // Set custom padding
+                                        borderRadius: '8px',
+                                        color: '#ffffff',
+                                        fontSize: '0.875rem',
+                                        fontWeight: '500',
+                                        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
+                                    }}
+                                >
+                                    {wallet?.address ? (
+                                        <>
+                                            <img
+                                                src={IconWallet}
+                                                alt="wallet-icon"
+                                                style={{
+                                                    width: '16px',
+                                                    height: '16px',
+                                                    marginRight: '8px',
+                                                }}
+                                            />
+                                            <span>{shortenAddress(wallet.address)}</span>
+                                        </>
+                                    ) : (
+                                        'Connect Wallet'
+                                    )}
+                                </Button>
+                            ),
+                            className: 'header-connect-button !p-0 !bg-transparent !m-0', // Reset padding, margin, and background
+                        }}
+                        connectModal={{
+                            title: 'Connect Wallet',
+                            size: 'wide',
+                        }}
+                        onConnect={onConnectWallet}
+                        onDisconnect={onLogout}
+                        showAllWallets={false}
+                    />
+                </div>
             </div>
         </Row>
     );

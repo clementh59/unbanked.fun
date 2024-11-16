@@ -44,13 +44,11 @@ export const BalanceProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const [totalBalance, setTotalBalance] = useState<number>(0);
 
     const address = useStore((state) => state.wallet?.address);
-    console.log(address);
 
     const getTokenContract = (contractAddress: string) =>
         getContract({ client, chain: base, address: contractAddress });
 
     const fetchBalances = async () => {
-
         if (!address) return;
 
         const contracts = {
