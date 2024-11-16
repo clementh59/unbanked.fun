@@ -7,7 +7,6 @@ import { base } from 'thirdweb/chains';
 import { Wallet } from 'thirdweb/wallets';
 import { useStore } from "@/hooks/useStore";
 import { TypeWallet } from '@/types/types';
-import { apiServices } from 'otomato-sdk';
 import { get } from 'lodash';
 import { removeStorageWhenDisconnecting, setStorageWhenConnecting } from '@/utils/storage.util';
 import { showToast } from '@/utils/toast.util';
@@ -16,6 +15,7 @@ import Button from '@/components/buttons/button';
 
 // Import icons from assets
 import { SearchIcon, MoonIcon, NotificationIcon, RefreshCircleIcon, ClockIcon, IconWallet } from '@/assets';
+import { generateLoginPayload } from '@/utils/otomato.util';
 
 const accessCode = '123456';
 
@@ -62,7 +62,7 @@ const Header = () => {
 
     const onGetLoginPayload = async (address: string, chainId: number) => {
         try {
-            const payload = await apiServices.generateLoginPayload(address, chainId, accessCode);
+            const payload = await generateLoginPayload(address, chainId, accessCode);
             if (!payload?.address) throw new Error('Invalid login payload.');
             return payload;
         } catch (error) {

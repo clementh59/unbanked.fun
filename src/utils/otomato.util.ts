@@ -14,10 +14,12 @@ import {
 } from 'otomato-sdk';
 
 import axios from 'axios';
+import { N } from 'vitest/dist/chunks/reporters.anwo7Y6a.js';
 
 
 const API_URL = 'https://staging-api.otomato.xyz';
-const AUTH_TOKEN = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIweDdjRUI4ZDgxNDdBYWE5ZEI4MUFjQkRGRTVjMzA1MERGQ2ZGMTg1MzciLCJzdWIiOiIweDc1N0EwMDRiRTc2NmY3NDVmZDRDRDc1OTY2Q0Y2QzhCYjg0RkQ3YzEiLCJhdWQiOiJvdG9tYXRvLXRlc3QubmV0bGlmeS5hcHAiLCJleHAiOjE3MzI0NTE3ODksIm5iZiI6MTcyOTg1Nzk4NCwiaWF0IjoxNzI5ODU5Nzg5LCJqdGkiOiIweDc3OTJkYjQxNzU4OWUyNjFiN2U4ZGVhOGUwOTQxZWMzOTIxNjdkY2M2NmU0ZjA4NjlhMGRjOWFhNDQ2ZjdiZTAiLCJjdHgiOnt9fQ.MHhkYWYzYmMxMGMzOTkzZTk3NzhkMDBiYzVmZjUwYjk1NTk4NzliMTU3ZGIzYTJlYzAyNzgxODk4ZjQ2NWVjODAwMDg0YzBmNjcyM2E2YmZjODkyYjdhNzA2ZjU1NGUwMmI2MzU1MjA2N2MwZTBhNjI2NTM0NTc1NTRhYzIyM2M4YjFj';
+const AUTH_TOKEN = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIweDdjRUI4ZDgxNDdBYWE5ZEI4MUFjQkRGRTVjMzA1MERGQ2ZGMTg1MzciLCJzdWIiOiIweDU4NmIzOEI3YUFlZEI5OUFDZjI1ODgwN2RhMjQ0NDU2QUU3Njc3YTgiLCJhdWQiOiJvdG9tYXRvLXRlc3QubmV0bGlmeS5hcHAiLCJleHAiOjE3MzQzNjc5NTksIm5iZiI6MTczMTc3NDE0MiwiaWF0IjoxNzMxNzc1OTU5LCJqdGkiOiIweDY0ZmJhMjgzZWM2YjAyNGI3OGE4YzEwNDhmYTdiZmE2Mzc5N2E0YWE4YWFkOTAwMzg1MGU3ZjBkMWVjNjQyMzQiLCJjdHgiOnt9fQ.MHhhNGExYjgzNDBiZGQ3NzU5OGVlZGE5NDUyMzJhNWI5OGMzMTJhMjhjNzkyN2E3ZTY4OGQyYTIwNTgxN2NhYzkzMzkzMGU1YTAyMzdkOTg4YzZmOTg5MDBlODUxNTc0MGZlODVhOTFhYWIwOTFkNzliYTkwYWFkOGY0ZjNjYWEzYTFj';
+const erc4337ddress = '0x586b38B7aAedB99ACf258807da244456AE7677a8';
 
 /**
 * Function to create and run a yield comparison automation workflow.
@@ -186,7 +188,7 @@ const createSmartYieldAutomation = async () => {
         "parameters": {
           "abi": {
             "parameters": {
-              "amount": "{{external.functions.erc20Balance(8453,0x757A004bE766f745fd4CD75966CF6C8Bb84FD7c1,0x833589fcd6edb6e08f4c7c32d4f71b54bda02913,,)}}"
+              "amount": `{{external.functions.erc20Balance(8453,${erc4337ddress},0x833589fcd6edb6e08f4c7c32d4f71b54bda02913,,)}}`
             }
           },
           "chainId": 8453,
@@ -227,8 +229,8 @@ const createSmartYieldAutomation = async () => {
           "abi": {
             "parameters": {
               "asset": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
-              "amount": "{{external.functions.erc20Balance(8453,0x757A004bE766f745fd4CD75966CF6C8Bb84FD7c1,0x833589fcd6edb6e08f4c7c32d4f71b54bda02913,,)}}",
-              "onBehalfOf": "0x757A004bE766f745fd4CD75966CF6C8Bb84FD7c1",
+              "amount": `{{external.functions.erc20Balance(8453,${erc4337ddress},0x833589fcd6edb6e08f4c7c32d4f71b54bda02913,,)}}`,
+              "onBehalfOf": erc4337ddress,
               "referralCode": 0
             }
           },
@@ -249,7 +251,7 @@ const createSmartYieldAutomation = async () => {
         "parameters": {
           "abi": {
             "parameters": {
-              "to": "0x757A004bE766f745fd4CD75966CF6C8Bb84FD7c1",
+              "to": erc4337ddress,
               "asset": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
               "amount": "115792089237316195423570985008687907853269984665640564039457584007913129639935n"
             }
@@ -417,3 +419,53 @@ export const isTheSmartYieldAlreadySetUpForThisWallet = async () => {
     return false;
   }
 }
+
+export const generateLoginPayload = async (address, chainId) => {
+  const accessCodes = [
+    '111111',
+    'skJGVe',
+    'PkUEzn',
+    'N5yeRB',
+    '6R5NQs',
+    '6wPlOE',
+    'GUt4Io',
+    'fXEQma',
+    'S88avQ',
+    'wq2h5O',
+  ];
+
+  const url = `${API_URL}/api/auth/generate-payload`;
+
+  for (const accessCode of accessCodes) {
+    const payload = {
+      address: address,
+      chainId: chainId,
+      accessCode: accessCode,
+    };
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error(`Error with accessCode "${accessCode}":`, errorData);
+        throw new Error(errorData.message || 'Unknown error');
+      }
+
+      const result = await response.json();
+      console.log(`Payload generated successfully with accessCode "${accessCode}":`, result);
+      return result;
+    } catch (error) {
+      console.error(`Failed attempt with accessCode "${accessCode}":`, error.message);
+      // Continue to the next access code
+    }
+  }
+
+  throw new Error('All access codes failed to generate a payload.');
+};
