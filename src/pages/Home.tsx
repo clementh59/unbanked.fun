@@ -1,7 +1,6 @@
 import React from "react";
 import Header from '../components/Header';
 import CurrentBalance from "@/components/CurrentBalance";
-import TotalBalance from "@/components/AvailableBalance";
 import TotalProfitCard from "@/components/ProfitCard";
 import AllYieldChart from "@/components/YieldChart";
 import NavigationBar from "@/components/NavigationBar";
@@ -30,7 +29,7 @@ const Home: React.FC = (): JSX.Element => {
         <Header />
         <section style={{ paddingBottom: '16px' }}>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-            <CurrentBalance target={300000} progress={15} daysRemaining={41} />
+            <CurrentBalance target={300000} progress={15} />
             <TotalProfitCard />
           </div>
         </section>

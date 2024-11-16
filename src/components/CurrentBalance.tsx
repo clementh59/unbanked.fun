@@ -4,10 +4,9 @@ import React from 'react';
 interface CurrentBalanceProps {
     target: number;
     progress: number; // Percentage value, e.g., 15 for 15%
-    daysRemaining: number;
 }
 
-const CurrentBalance: React.FC<CurrentBalanceProps> = ({ target, progress, daysRemaining }) => {
+const CurrentBalance: React.FC<CurrentBalanceProps> = ({ target, progress }) => {
     const { totalBalance } = useBalance();
 
     return (

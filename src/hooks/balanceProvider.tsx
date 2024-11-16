@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { useStore } from "@/hooks/useStore";
 import { createThirdwebClient, getContract } from 'thirdweb';
 import { getBalance } from 'thirdweb/extensions/erc20';
 import { base } from 'thirdweb/chains';
+import { useAddress } from "@thirdweb-dev/react";
+import { useStore } from './useStore';
 
 const client = createThirdwebClient({ clientId: 'd0ce057c3d99f4415d5720cca00ac5fe' });
 
@@ -42,13 +43,14 @@ export const BalanceProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const [aUsdcBalance, setAUsdcBalance] = useState<number>(0);
     const [totalBalance, setTotalBalance] = useState<number>(0);
 
-    // Get address from Zustand store
     const address = useStore((state) => state.wallet?.address);
+    console.log(address);
 
     const getTokenContract = (contractAddress: string) =>
         getContract({ client, chain: base, address: contractAddress });
 
     const fetchBalances = async () => {
+
         if (!address) return;
 
         const contracts = {
