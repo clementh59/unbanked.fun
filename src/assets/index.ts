@@ -3,6 +3,7 @@ import MoonIcon from './moon.png';
 import NotificationIcon from './notification.png';
 import RefreshCircleIcon from './refresh-circle.png';
 import WalletMinusIcon from './wallet-minus.png';
+import DepositIcon from './deposit.png';
 import SettingsIcon from './setting.png';
 import LogoIcon from './Logo.png';
 import HomeIcon from './home.png';
@@ -19,5 +20,6 @@ export {
   LogoIcon,
   HomeIcon,
   WalletMinusIcon,
-  SettingsIcon
+  SettingsIcon,
+  DepositIcon
 };

@@ -153,7 +153,7 @@ const createSmartYieldAutomation = async (token, erc4337Address) => {
                 {
                   "value1": "{{external.functions.ionicLendingRate(8453,0x833589fcd6edb6e08f4c7c32d4f71b54bda02913)}}",
                   "value2": "{{external.functions.aaveLendingRate(0xA238Dd80C259a72e81d7e4664a9801593F98d1c5,8453,0x833589fcd6edb6e08f4c7c32d4f71b54bda02913)}}",
-                  "condition": "gt"
+                  "condition": "lt"
                 }
               ]
             }
@@ -418,6 +418,46 @@ export const getExecution = async (id, token) => {
     throw error;
   }
 };
+
+export const analyzeLatestDeposits = async (token) => {
+  const url = `${API_URL}/api/executions`;
+
+  const headers = {
+    Authorization: token,
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  };
+
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: headers,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(`Error fetching executions: ${errorData.message || 'Unknown error'}`);
+    }
+
+    const result = await response.json();
+
+    if (result && result.length > 0) {
+      const limit = Math.min(50, result.length);
+      for (let i = 0; i < limit; i++) {
+        const exec = await getExecution(result[i].id, token);
+        const aaveDepositHash = exec.workflow.nodes.find(i => i.blockId === 100020).output.txHash; 
+        const ionicDepositHash = exec.workflow.nodes.find(i => i.blockId === 100006).output.txHash; 
+        console.log(aaveDepositHash)
+        console.log(ionicDepositHash)
+      }
+    } else {
+      throw new Error('No executions found');
+    }
+  } catch (error) {
+    console.error('Error fetching last execution:', error);
+    throw error;
+  }
+}
 
 export const isTheSmartYieldAlreadySetUpForThisWallet = async (token) => {
   try {

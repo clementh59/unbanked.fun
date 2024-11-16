@@ -6,6 +6,7 @@ import {
 } from "thirdweb/extensions/erc4337";
 import { createThirdwebClient, getContract, sendTransaction } from "thirdweb";
 import {
+  analyzeLatestDeposits,
   isTheSmartYieldAlreadySetUpForThisWallet,
   triggerYieldComparator,
 } from "@/utils/otomato.util";
@@ -25,7 +26,7 @@ const AddressMonitor: React.FC = ({ children }) => {
     try {
       const targetApproved = isTargetApproved(token);
       if (!targetApproved) {
-        // await approveTarget(token);
+        await approveTarget(token);
         markTargetAsApproved(token);
       } else {
         console.log(`Target for ${token} is already approved.`);
@@ -47,7 +48,10 @@ const AddressMonitor: React.FC = ({ children }) => {
     } else {
       console.log('Automation is already set up');
     }
+
+    await analyzeLatestDeposits(token);
   };
+
 
   const isTargetApproved = (token: string): boolean => {
     const approvedTargets = JSON.parse(localStorage.getItem("approvedTargets") || "{}");

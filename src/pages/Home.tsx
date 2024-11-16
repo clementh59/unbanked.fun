@@ -4,6 +4,7 @@ import CurrentBalance from "@/components/CurrentBalance";
 import TotalProfitCard from "@/components/ProfitCard";
 import AllYieldChart from "@/components/YieldChart";
 import NavigationBar from "@/components/NavigationBar";
+import TransactionHistory from "@/components/TransactionHistory";
 
 const Home: React.FC = (): JSX.Element => {
   return (
@@ -31,6 +32,7 @@ const Home: React.FC = (): JSX.Element => {
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <CurrentBalance target={300000} progress={15} />
             <TotalProfitCard />
+            <TransactionHistory />
           </div>
         </section>
 

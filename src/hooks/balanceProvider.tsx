@@ -28,20 +28,22 @@ const ionUSDCRate = 1 / 4.767909;
 
 // todo: get these from the contract
 // APY values for each token
-const APY_RATES = {
-    usdc: 0.05, // 5% APY
-    ionUsdc: 0.12, // 1000% APY
-    aUsdc: 0.10, // 10% APY
-};
 
 // Update interval (200ms)
 const UPDATE_INTERVAL = 200;
 
 export const BalanceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const yieldData = useStore((state) => state.yield); // Use `yieldData` to avoid reserved keywords
     const [usdcBalance, setUsdcBalance] = useState<number>(0);
     const [ionUsdcBalance, setIonUsdcBalance] = useState<number>(0);
     const [aUsdcBalance, setAUsdcBalance] = useState<number>(0);
     const [totalBalance, setTotalBalance] = useState<number>(0);
+
+    const APY_RATES = {
+        usdc: 0, // Default APY for USDC
+        ionUsdc: yieldData?.ionicYield ? yieldData.ionicYield / 100 : 0,
+        aUsdc: yieldData?.aaveYield ? yieldData.aaveYield / 100 : 0,
+      };
 
     const address = useStore((state) => state.wallet?.address);
 
