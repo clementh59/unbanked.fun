@@ -124,7 +124,7 @@ const TotalProfitCard: React.FC = () => {
                         color: '#A3AED0',
                     }}
                 >
-                    Since February 2024
+                    Since November 2024
                 </p>
             </div>
 
