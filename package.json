@@ -48,6 +48,7 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.27.0",
     "thirdweb": "^5.68.0",
+    "vite-plugin-svgr": "^4.3.0",
     "zustand": "^5.0.1"
   }
 }

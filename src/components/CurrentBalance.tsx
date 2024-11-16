@@ -2,7 +2,6 @@ import { useBalance } from '@/hooks/balanceProvider';
 import React from 'react';
 
 interface CurrentBalanceProps {
-    balance: number;
     target: number;
     progress: number; // Percentage value, e.g., 15 for 15%
     daysRemaining: number;

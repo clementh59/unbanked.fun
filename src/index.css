@@ -37,3 +37,14 @@ body {
     height: 28px;
     object-fit: contain;
 }
+
+.header-connect-button {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important; /* Optional if shadows cause misalignment */
+}
+
+button {
+    flex: 1;
+}
