@@ -26,8 +26,6 @@ const CurrentBalance: React.FC<CurrentBalanceProps> = ({ target, progress, daysR
                 <span>{progress}% Reached</span>
                 <span>Target: ${target.toLocaleString()}</span>
             </div>
-
-            <p style={daysRemainingStyle}>{daysRemaining} more days to go!</p>
         </div>
     );
 };

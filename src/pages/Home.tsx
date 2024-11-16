@@ -28,11 +28,9 @@ const Home: React.FC = (): JSX.Element => {
         }}
       >
         <Header />
-        <section style={{ paddingBottom: '32px' }}>
-          <h1 style={{ color: '#ffffff' }}>Overview</h1>
+        <section style={{ paddingBottom: '16px' }}>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <CurrentBalance target={300000} progress={15} daysRemaining={41} />
-            <TotalBalance />
             <TotalProfitCard />
           </div>
         </section>

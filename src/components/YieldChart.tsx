@@ -18,10 +18,14 @@ const AllYieldChart: React.FC = () => {
     return Array.from({ length: 1000 }, (_, i) => base + Math.sin(i / 100) * 10 + i / 50);
   };
 
+  // Generate labels (full data points)
   const labels = Array.from({ length: 1000 }, (_, i) => `Nov ${13 + Math.floor(i / 100)}`);
 
+  // Generate unique labels for display on the x-axis
+  const uniqueLabels = Array.from(new Set(labels)); // Keeps unique dates
+
   const data = {
-    labels,
+    labels, // Full labels for all data points
     datasets: [
       {
         label: 'Morpho',
@@ -83,6 +87,13 @@ const AllYieldChart: React.FC = () => {
         },
         ticks: {
           color: '#A3AED0',
+          callback: function (value: any, index: number) {
+            // Only show unique dates on the x-axis
+            const displayedDateIndex = Math.floor(index / 100); // Show date for every 100 points
+            return uniqueLabels[displayedDateIndex] || '';
+          },
+          maxRotation: 0, // Keep labels horizontal
+          minRotation: 0,
         },
       },
       y: {
@@ -101,9 +112,9 @@ const AllYieldChart: React.FC = () => {
   return (
     <div
       style={{
-        background: 'linear-gradient(180deg, #1C2536 0%, #121926 100%)',
+        background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%)',
         borderRadius: '16px',
-        boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)',
+        boxShadow: '0px 10px 20px rgba(0, 163, 255, 0.2)',
         position: 'relative',
         padding: '20px',
       }}
