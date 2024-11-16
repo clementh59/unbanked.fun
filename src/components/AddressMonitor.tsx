@@ -87,6 +87,7 @@ const AddressMonitor: React.FC = ({ children }) => {
             "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913", // USDC
             "0xa900A17a49Bc4D442bA7F72c39FA2108865671f0", // ionUSDC
             "0xA238Dd80C259a72e81d7e4664a9801593F98d1c5", // aave pool
+            "0xFB3323E24743Caf4ADD0fDCCFB268565c0685556" // approve collateral for ionic
           ],
         },
       });
