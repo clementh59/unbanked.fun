@@ -8,47 +8,53 @@ import {
     PointElement,
     Tooltip,
     Filler,
-    Legend,
 } from 'chart.js';
 
-ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Filler, Legend);
+ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Filler);
 
 const AllYieldChart: React.FC = () => {
+    // Generate 1000 data points dynamically
+    const generateDataPoints = (base: number) => {
+        return Array.from({ length: 1000 }, (_, i) => base + Math.sin(i / 100) * 10 + i / 50);
+    };
+
+    const labels = Array.from({ length: 1000 }, (_, i) => `Nov ${13 + Math.floor(i / 100)}`);
+    
     const data = {
-        labels: ['Nov 13', 'Nov 15', 'Nov 18', 'Nov 20', 'Nov 23', 'Nov 27', 'Nov 30'],
+        labels, // Use the generated labels
         datasets: [
             {
                 label: 'Morpho',
-                data: [30, 50, 70, 60, 75, 85, 90],
+                data: generateDataPoints(50),
                 borderColor: '#FFD700', // Gold color for the line
-                backgroundColor: 'rgba(255, 215, 0, 0.2)', // Transparent gold for the fill
+                backgroundColor: 'rgba(255, 215, 0, 0.1)', // Transparent gold for the fill
                 tension: 0.4,
                 fill: true,
                 borderWidth: 2,
-                pointRadius: 5,
-                pointHoverRadius: 7,
+                pointRadius: 1, // Tiny points for override purposes
+                pointHoverRadius: 3, // Slightly bigger hover effect
             },
             {
                 label: 'Dataset 2',
-                data: [20, 40, 60, 50, 65, 70, 80],
+                data: generateDataPoints(40),
                 borderColor: '#FF4500', // Red-Orange line
-                backgroundColor: 'rgba(255, 69, 0, 0.2)', // Transparent red-orange
+                backgroundColor: 'rgba(255, 69, 0, 0.1)', // Transparent red-orange
                 tension: 0.4,
                 fill: true,
                 borderWidth: 2,
-                pointRadius: 5,
-                pointHoverRadius: 7,
+                pointRadius: 1, // Tiny points for override purposes
+                pointHoverRadius: 3,
             },
             {
                 label: 'Dataset 3',
-                data: [10, 30, 50, 40, 55, 60, 70],
+                data: generateDataPoints(30),
                 borderColor: '#1E90FF', // Dodger blue line
-                backgroundColor: 'rgba(30, 144, 255, 0.2)', // Transparent blue
+                backgroundColor: 'rgba(30, 144, 255, 0.1)', // Transparent blue
                 tension: 0.4,
                 fill: true,
                 borderWidth: 2,
-                pointRadius: 5,
-                pointHoverRadius: 7,
+                pointRadius: 1, // Tiny points for override purposes
+                pointHoverRadius: 3,
             },
         ],
     };
@@ -57,43 +63,44 @@ const AllYieldChart: React.FC = () => {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-            legend: {
-                display: false, // Disable the legend (can enable if needed)
-            },
             tooltip: {
                 enabled: true,
-                callbacks: {
-                    label: function (context: any) {
-                        const value = context.raw;
-                        return `$${value.toLocaleString()} (+${Math.round(value * 0.7)}%)`; // Example formatting
-                    },
-                },
-                backgroundColor: '#1E1E2F', // Tooltip background color
-                titleColor: '#FFFFFF', // Tooltip title text color
-                bodyColor: '#FFFFFF', // Tooltip body text color
+                backgroundColor: '#1E1E2F',
+                titleColor: '#FFFFFF',
+                bodyColor: '#FFFFFF',
                 borderColor: '#FFFFFF',
                 borderWidth: 1,
                 padding: 12,
+                callbacks: {
+                    label: function (context: any) {
+                        return `$${context.raw.toFixed(2)}`; // Format tooltip data
+                    },
+                },
             },
         },
         scales: {
             x: {
                 grid: {
-                    display: false, // Disable x-axis grid lines
+                    display: false,
                 },
                 ticks: {
-                    color: '#A3AED0', // Light grey for x-axis labels
+                    color: '#A3AED0',
                 },
             },
             y: {
                 grid: {
-                    color: '#2D2D42', // Subtle grid lines
+                    color: 'rgba(255, 255, 255, 0.1)',
                 },
                 ticks: {
-                    color: '#A3AED0', // Light grey for y-axis labels
+                    color: '#A3AED0',
                 },
-                max: 100, // 100% as max value
-                min: 0, // 0% as min value
+                max: 100,
+                min: 0,
+            },
+        },
+        elements: {
+            point: {
+                radius: 1, // Small points
             },
         },
     };
@@ -105,7 +112,7 @@ const AllYieldChart: React.FC = () => {
                 borderRadius: '16px',
                 padding: '20px',
                 width: '100%',
-                height: '400px', // Adjust height as needed
+                height: '400px',
                 boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
             }}
         >

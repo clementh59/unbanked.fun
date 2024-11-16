@@ -2,6 +2,10 @@ import ClockIcon from './clock.png';
 import MoonIcon from './moon.png';
 import NotificationIcon from './notification.png';
 import RefreshCircleIcon from './refresh-circle.png';
+import WalletMinusIcon from './wallet-minus.png';
+import SettingsIcon from './setting.png';
+import LogoIcon from './Logo.png';
+import HomeIcon from './home.png';
 import SearchIcon from './search.png';
 import IconWallet from './ic-wallet.svg';
 
@@ -11,5 +15,9 @@ export {
   MoonIcon,
   NotificationIcon,
   RefreshCircleIcon,
-  SearchIcon
+  SearchIcon,
+  LogoIcon,
+  HomeIcon,
+  WalletMinusIcon,
+  SettingsIcon
 };

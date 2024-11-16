@@ -1,30 +1,36 @@
-import React from "react";
+import React from 'react';
 import Header from '../components/Header';
 import CurrentBalance from "@/components/CurrentBalance";
 import TotalBalance from "@/components/AvailableBalance";
 import TotalProfitCard from "@/components/ProfitCard";
-import AllYieldChart from "@/components/YieldChart"; // Import the new component
+import AllYieldChart from "@/components/YieldChart";
+import NavigationBar from "@/components/NavigationBar"; // Import the navigation bar
 
 const Home: React.FC = (): JSX.Element => {
-  return (
-    <div className="min-h-screen" style={{ backgroundColor: '#121212', padding: '16px' }}> {/* Optional dark background */}
-      <Header />
-      <section className="p-4">
-        <h1 style={{ color: '#ffffff' }}>Overview</h1>
-        <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-          <CurrentBalance target={300000} progress={15} daysRemaining={41} />
-          <TotalBalance />
-          <TotalProfitCard />
-        </div>
-      </section>
+    return (
+        <div style={{ display: 'flex', backgroundColor: '#121212', color: '#ffffff' }}>
+            {/* Navigation Bar */}
+            <NavigationBar />
 
-      {/* Add All Yield Chart Section */}
-      <section className="p-4">
-        <h2 style={{ color: '#ffffff', marginBottom: '16px' }}>Yield Analysis</h2>
-        <AllYieldChart /> {/* Integrate the chart here */}
-      </section>
-    </div>
-  );
+            {/* Main Content */}
+            <div style={{ marginLeft: '80px', flex: 1 }}>
+                <Header />
+                <section className="p-4">
+                    <h1>Overview</h1>
+                    <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+                        <CurrentBalance target={300000} progress={15} daysRemaining={41} />
+                        <TotalBalance />
+                        <TotalProfitCard />
+                    </div>
+                </section>
+
+                <section className="p-4">
+                    <h2 style={{ marginBottom: '16px' }}>Yield Analysis</h2>
+                    <AllYieldChart />
+                </section>
+            </div>
+        </div>
+    );
 };
 
 export default Home;
