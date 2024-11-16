@@ -14,10 +14,11 @@ const root = createRoot(container);
 root.render(
   <ThirdwebProvider>
     <BalanceProvider>
-      <AddressMonitor />
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <AddressMonitor>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AddressMonitor>
     </BalanceProvider>
   </ThirdwebProvider>
 );
