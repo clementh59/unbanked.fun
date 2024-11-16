@@ -20,12 +20,16 @@ const AddressMonitor: React.FC = ({ children }) => {
   const [key, setKey] = useState(0);
 
   const initOtomatoWorkflow = async () => {
-
-    if (!token)
-      return;
+    if (!token) return;
 
     try {
-      await approveTarget();
+      const targetApproved = isTargetApproved(token);
+      if (!targetApproved) {
+        // await approveTarget(token);
+        markTargetAsApproved(token);
+      } else {
+        console.log(`Target for ${token} is already approved.`);
+      }
     } catch (error) {
       if (
         error.message.includes("AA10 sender already constructed") ||
@@ -37,19 +41,26 @@ const AddressMonitor: React.FC = ({ children }) => {
       }
     }
 
-    console.log(activeAccount?.address);
-    
-
     const automationIsSetUp = await isTheSmartYieldAlreadySetUpForThisWallet(token);
     if (!automationIsSetUp) {
       await triggerYieldComparator(token, activeAccount?.address);
     } else {
-      console.log('automation is already set up')
+      console.log('Automation is already set up');
     }
   };
 
-  const approveTarget = async () => {
+  const isTargetApproved = (token: string): boolean => {
+    const approvedTargets = JSON.parse(localStorage.getItem("approvedTargets") || "{}");
+    return approvedTargets[token] === true;
+  };
 
+  const markTargetAsApproved = (token: string): void => {
+    const approvedTargets = JSON.parse(localStorage.getItem("approvedTargets") || "{}");
+    approvedTargets[token] = true;
+    localStorage.setItem("approvedTargets", JSON.stringify(approvedTargets));
+  };
+
+  const approveTarget = async (token: string) => {
     if (!activeAccount) {
       console.error("No active account found");
       return;
@@ -71,20 +82,20 @@ const AddressMonitor: React.FC = ({ children }) => {
           approvedTargets: [
             "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913", // USDC
             "0xa900A17a49Bc4D442bA7F72c39FA2108865671f0", // ionUSDC
-            // "", // aUSDC
             "0xA238Dd80C259a72e81d7e4664a9801593F98d1c5", // aave pool
-          ]
+          ],
         },
       });
 
-      const sessionKey = await sendTransaction({ transaction, account: activeAccount! })
+      const sessionKey = await sendTransaction({ transaction, account: activeAccount! });
       console.log(sessionKey);
 
       console.log(
-        "Approved targets for signer 0x1161ca8f52914eda0ff3eb9305dfe641ba0aec11"
+        `Approved targets for signer 0x1161ca8f52914eda0ff3eb9305dfe641ba0aec11`
       );
     } catch (error) {
       console.error("Failed to approve target:", error);
+      throw error;
     }
   };
 

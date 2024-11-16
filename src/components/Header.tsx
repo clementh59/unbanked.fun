@@ -16,7 +16,7 @@ import Button from '@/components/buttons/button';
 
 // Import icons from assets
 import { MoonIcon, NotificationIcon, RefreshCircleIcon, IconWallet } from '@/assets';
-import { generateLoginPayload, getToken } from '@/utils/otomato.util';
+import { generateLoginPayload, getCurrentYield, getToken } from '@/utils/otomato.util';
 
 const wallets = [
     inAppWallet(),
@@ -31,7 +31,7 @@ const Header = () => {
     const token = useStore((state) => state.token);
     const walletRef = useRef<Wallet | null>(null);
 
-    const { setWallet, setAuth, setToken } = useStore();
+    const { setWallet, setAuth, setToken, setYield } = useStore();
 
     const onConnectWallet = useCallback(
         async (wallet: Wallet) => {
@@ -68,6 +68,8 @@ const Header = () => {
     
           if (token) {
             setToken(token);
+            const yields = await getCurrentYield(token);
+            setYield(yields)
           }
         } catch (error) {
           console.log(error, 'Get token error')
