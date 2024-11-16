@@ -1,23 +1,22 @@
 import React, { useCallback, useRef } from 'react';
 import Row from './Row';
 import { createThirdwebClient } from 'thirdweb';
-import { ConnectButton, useConnectedWallets } from 'thirdweb/react';
+import { ConnectButton } from 'thirdweb/react';
 import { createWallet, inAppWallet } from "thirdweb/wallets";
 import { base } from 'thirdweb/chains';
 import { Wallet } from 'thirdweb/wallets';
 import { useStore } from "@/hooks/useStore";
 import { TypeWallet } from '@/types/types';
+import { LoginPayload } from 'thirdweb/auth';
 import { get } from 'lodash';
-import { removeStorageWhenDisconnecting, setStorageWhenConnecting } from '@/utils/storage.util';
+import { removeStorageWhenDisconnecting } from '@/utils/storage.util';
 import { showToast } from '@/utils/toast.util';
 import { shortenAddress } from 'thirdweb/utils';
 import Button from '@/components/buttons/button';
 
 // Import icons from assets
-import { SearchIcon, MoonIcon, NotificationIcon, RefreshCircleIcon, ClockIcon, IconWallet } from '@/assets';
-import { generateLoginPayload } from '@/utils/otomato.util';
-
-const accessCode = '123456';
+import { MoonIcon, NotificationIcon, RefreshCircleIcon, IconWallet } from '@/assets';
+import { generateLoginPayload, getToken } from '@/utils/otomato.util';
 
 const wallets = [
     inAppWallet(),
@@ -33,7 +32,6 @@ const Header = () => {
     const walletRef = useRef<Wallet | null>(null);
 
     const { setWallet, setAuth, setToken } = useStore();
-    const connectedWallets = useConnectedWallets();
 
     const onConnectWallet = useCallback(
         async (wallet: Wallet) => {
@@ -47,22 +45,14 @@ const Header = () => {
                 };
 
                 setWallet(walletState);
-
-                // Attempt to login
-                try {
-                    const payload = await onGetLoginPayload(walletState.address, base.id);
-                } catch (error) {
-                    showToast('error', 'Login failed', 'Unable to complete login.');
-                    console.error(error);
-                }
             }
         },
         [token],
     );
 
-    const onGetLoginPayload = async (address: string, chainId: number) => {
+    const onGetLoginPayload = async () => {
         try {
-            const payload = await generateLoginPayload(address, chainId, accessCode);
+            const payload = await generateLoginPayload(wallet?.address || "", base.id);
             if (!payload?.address) throw new Error('Invalid login payload.');
             return payload;
         } catch (error) {
@@ -71,6 +61,24 @@ const Header = () => {
             throw error;
         }
     };
+
+    const onLogin = async (payload: LoginPayload, signature: string) => {
+        try {
+          const { token } = await getToken(payload, signature)
+    
+          if (token) {
+            console.log('token is!!' + token);
+            setToken(token);
+          }
+        } catch (error) {
+          console.log(error, 'Get token error')
+        }
+      }
+
+      const onCheckLoggedIn = async () => {
+        if (!token) return false
+        return true;
+      }
 
     const onLogout = async () => {
         setAuth({ token: '', lastAddressLoggedIn: wallet?.address || '' });
@@ -172,6 +180,12 @@ const Header = () => {
                         onConnect={onConnectWallet}
                         onDisconnect={onLogout}
                         showAllWallets={false}
+                        auth={{
+                            getLoginPayload: async (): Promise<LoginPayload> => onGetLoginPayload(),
+                            doLogin: async ({ payload, signature }) => onLogin(payload, signature),
+                            isLoggedIn: async (): Promise<boolean> => onCheckLoggedIn(),
+                            doLogout: async () => onLogout(),
+                          }}
                     />
                 </div>
             </div>

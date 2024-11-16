@@ -14,17 +14,16 @@ import {
 } from 'otomato-sdk';
 
 import axios from 'axios';
-import { N } from 'vitest/dist/chunks/reporters.anwo7Y6a.js';
 
 
 const API_URL = 'https://staging-api.otomato.xyz';
-const AUTH_TOKEN = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIweDdjRUI4ZDgxNDdBYWE5ZEI4MUFjQkRGRTVjMzA1MERGQ2ZGMTg1MzciLCJzdWIiOiIweDU4NmIzOEI3YUFlZEI5OUFDZjI1ODgwN2RhMjQ0NDU2QUU3Njc3YTgiLCJhdWQiOiJvdG9tYXRvLXRlc3QubmV0bGlmeS5hcHAiLCJleHAiOjE3MzQzNjc5NTksIm5iZiI6MTczMTc3NDE0MiwiaWF0IjoxNzMxNzc1OTU5LCJqdGkiOiIweDY0ZmJhMjgzZWM2YjAyNGI3OGE4YzEwNDhmYTdiZmE2Mzc5N2E0YWE4YWFkOTAwMzg1MGU3ZjBkMWVjNjQyMzQiLCJjdHgiOnt9fQ.MHhhNGExYjgzNDBiZGQ3NzU5OGVlZGE5NDUyMzJhNWI5OGMzMTJhMjhjNzkyN2E3ZTY4OGQyYTIwNTgxN2NhYzkzMzkzMGU1YTAyMzdkOTg4YzZmOTg5MDBlODUxNTc0MGZlODVhOTFhYWIwOTFkNzliYTkwYWFkOGY0ZjNjYWEzYTFj';
+const AUTH_TOKEN = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIweDdjRUI4ZDgxNDdBYWE5ZEI4MUFjQkRGRTVjMzA1MERGQ2ZGMTg1MzciLCJzdWIiOiIweDU4NmIzOEI3YUFlZEI5OUFDZjI1ODgwN2RhMjQ0NDU2QUU3Njc3YTgiLCJhdWQiOiJvdG9tYXRvLXRlc3QubmV0bGlmeS5hcHAiLCJleHAiOjE3MzQzNzE4NDYsIm5iZiI6MTczMTc3ODA0MiwiaWF0IjoxNzMxNzc5ODQ2LCJqdGkiOiIweDE3MTY3NDM2ZDFiZTAwOTYyM2UzZThlN2JlYjdmYmYxMzVmN2ViNjJkYTcxNDljNzEwMWM4NjM5NDJjYjk5ZjAiLCJjdHgiOnt9fQ.MHhlZmIyZGNiNDJkZDU2ZDRkOGI5ZGU0MmE4OTRkZjA3ZWU0ZmRkMDU5MTc3YjNmNmUxNzQyYjQ4ZDc5YjQ1MmE2MjNkODdlM2Y2Zjk2NTI5YjkxYTkxNzAzMWUwNTQ0NGI4NWZiMDQ3ZGU4MTgzOTczYTI5MTg2NzdlNzc0MWUyYjFi';
 const erc4337ddress = '0x586b38B7aAedB99ACf258807da244456AE7677a8';
 
 /**
 * Function to create and run a yield comparison automation workflow.
 */
-export async function triggerYieldComparator() {
+export async function triggerYieldComparator(token) {
   /*apiServices.setUrl(API_URL);
   apiServices.setAuth(AUTH_TOKEN);
 
@@ -121,18 +120,18 @@ export async function triggerYieldComparator() {
   }*/
 
   apiServices.setUrl(API_URL);
-  apiServices.setAuth(AUTH_TOKEN);
+  apiServices.setAuth(token);
 
-  const id = await createSmartYieldAutomation();
+  const id = await createSmartYieldAutomation(token);
   console.log('Automation created successfully:', id);
   /*const workflow = new Workflow();
   await workflow.load(id);
   await workflow.run();*/
-  const detail = await runWorkflow(id);
+  const detail = await runWorkflow(id, token);
   console.log('Run details:', detail);
 }
 
-const createSmartYieldAutomation = async () => {
+const createSmartYieldAutomation = async (token) => {
   const automationData = {
     "id": "ac0cfc1a-9ff4-4c5c-b773-ff519870dded",
     "name": "Unbanked savings",
@@ -309,7 +308,7 @@ const createSmartYieldAutomation = async () => {
   try {
     const response = await axios.post(url, automationData, {
       headers: {
-        Authorization: AUTH_TOKEN,
+        Authorization: token,
         'Content-Type': 'application/json',
       },
     });
@@ -321,11 +320,11 @@ const createSmartYieldAutomation = async () => {
   }
 }
 
-const runWorkflow = async (id: String) => {
+const runWorkflow = async (id: String, token) => {
   const url = `${API_URL}/api/workflows/${id}/run`;
 
   const headers = {
-    Authorization: AUTH_TOKEN,
+    Authorization: token,
     'Content-Type': 'application/json',
     Accept: 'application/json',
   };
@@ -349,10 +348,10 @@ const runWorkflow = async (id: String) => {
   }
 };
 
-export async function getWorkflowDetails(workflowId: String) {
+export async function getWorkflowDetails(workflowId: String, token) {
   const url = `https://staging-api.otomato.xyz/api/workflows/${workflowId}`;
   const headers = {
-    'Authorization': AUTH_TOKEN,
+    'Authorization': token,
     'Content-Type': 'application/json',
   };
 
@@ -375,11 +374,11 @@ export async function getWorkflowDetails(workflowId: String) {
   }
 }
 
-export async function getLastExecution() {
+export async function getLastExecution(token) {
   const url = `${API_URL}/api/executions`;
 
   const headers = {
-    Authorization: AUTH_TOKEN,
+    Authorization: token,
     'Content-Type': 'application/json',
     Accept: 'application/json',
   };
@@ -408,10 +407,10 @@ export async function getLastExecution() {
   }
 }
 
-export const isTheSmartYieldAlreadySetUpForThisWallet = async () => {
+export const isTheSmartYieldAlreadySetUpForThisWallet = async (token) => {
   try {
-    const lastExecution = await getLastExecution();
-    const workflow = await getWorkflowDetails(lastExecution.workflow.id);
+    const lastExecution = await getLastExecution(token);
+    const workflow = await getWorkflowDetails(lastExecution.workflow.id, token);
     if (workflow.name !== 'Unbanked savings')
       return false;
     return true;
@@ -468,4 +467,35 @@ export const generateLoginPayload = async (address, chainId) => {
   }
 
   throw new Error('All access codes failed to generate a payload.');
+};
+
+export const getToken = async (payload, signature) => {
+  const url = 'https://staging-api.otomato.xyz/api/auth/token';
+
+  const data = {
+    payload,
+    signature,
+  };
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(`Error retrieving token: ${errorData.message || 'Unknown error'}`);
+    }
+
+    const result = await response.json();
+    console.log('Token retrieved successfully:', result);
+    return result;
+  } catch (error) {
+    console.error('Error retrieving token:', error);
+    throw error;
+  }
 };
