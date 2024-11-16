@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, ReactNode } from "react";
 import { useActiveAccount } from "thirdweb/react";
 import {
   addSessionKey,
-  // resolveAddress,
 } from "thirdweb/extensions/erc4337";
 import { createThirdwebClient, getContract, sendTransaction } from "thirdweb";
 import {
-  analyzeLatestDeposits,
   isTheSmartYieldAlreadySetUpForThisWallet,
   triggerYieldComparator,
 } from "@/utils/otomato.util";
 import { base } from "thirdweb/chains";
 import { useStore } from "@/hooks/useStore";
 
-const client = createThirdwebClient({ clientId: 'd0ce057c3d99f4415d5720cca00ac5fe' });
+const client = createThirdwebClient({ clientId: "d0ce057c3d99f4415d5720cca00ac5fe" });
 
-const AddressMonitor: React.FC = ({ children }) => {
+interface AddressMonitorProps {
+  children: ReactNode; // Define the type for children
+}
+
+const AddressMonitor: React.FC<AddressMonitorProps> = ({ children }) => {
   const token = useStore((state) => state.token);
   const activeAccount = useActiveAccount();
   const [key, setKey] = useState(0);
@@ -46,12 +48,11 @@ const AddressMonitor: React.FC = ({ children }) => {
     if (!automationIsSetUp) {
       await triggerYieldComparator(token, activeAccount?.address, true);
     } else {
-      console.log('Automation is already set up');
+      console.log("Automation is already set up");
     }
 
     // await analyzeLatestDeposits(token);
   };
-
 
   const isTargetApproved = (token: string): boolean => {
     const approvedTargets = JSON.parse(localStorage.getItem("approvedTargets") || "{}");
@@ -81,13 +82,13 @@ const AddressMonitor: React.FC = ({ children }) => {
       const transaction = await addSessionKey({
         contract,
         account: activeAccount,
-        sessionKeyAddress: '0x1161ca8f52914eda0ff3eb9305dfe641ba0aec11', // otomato signer
+        sessionKeyAddress: "0x1161ca8f52914eda0ff3eb9305dfe641ba0aec11", // otomato signer
         permissions: {
           approvedTargets: [
             "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913", // USDC
             "0xa900A17a49Bc4D442bA7F72c39FA2108865671f0", // ionUSDC
             "0xA238Dd80C259a72e81d7e4664a9801593F98d1c5", // aave pool
-            "0xFB3323E24743Caf4ADD0fDCCFB268565c0685556" // approve collateral for ionic
+            "0xFB3323E24743Caf4ADD0fDCCFB268565c0685556", // approve collateral for ionic
           ],
         },
       });
