@@ -7,7 +7,10 @@ import { base } from 'thirdweb/chains';
 const client = createThirdwebClient({ clientId: 'd0ce057c3d99f4415d5720cca00ac5fe' });
 
 interface BalanceContextProps {
-    balance: string;
+    usdcBalance: string;
+    ionUsdcBalance: string;
+    aUsdcBalance: string;
+    totalBalance: string;
 }
 
 const BalanceContext = createContext<BalanceContextProps | undefined>(undefined);
@@ -20,8 +23,24 @@ export const useBalance = () => {
     return context;
 };
 
+const ionUSDCRate = 1 / 4.767909;
+
+// todo: get these from the contract
+// APY values for each token
+const APY_RATES = {
+    usdc: 0.05, // 5% APY
+    ionUsdc: 0.12, // 1000% APY
+    aUsdc: 0.10, // 10% APY
+};
+
+// Update interval (200ms)
+const UPDATE_INTERVAL = 200;
+
 export const BalanceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [balance, setBalance] = useState<string>('0');
+    const [usdcBalance, setUsdcBalance] = useState<number>(0);
+    const [ionUsdcBalance, setIonUsdcBalance] = useState<number>(0);
+    const [aUsdcBalance, setAUsdcBalance] = useState<number>(0);
+    const [totalBalance, setTotalBalance] = useState<number>(0);
 
     // Get address from Zustand store
     const address = useStore((state) => state.wallet?.address);
@@ -29,25 +48,79 @@ export const BalanceProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const getTokenContract = (contractAddress: string) =>
         getContract({ client, chain: base, address: contractAddress });
 
-    const fetchBalance = async () => {
-        const contract = getTokenContract('0x833589fcd6edb6e08f4c7c32d4f71b54bda02913');
-        if (contract && address) {
-            const { displayValue } = await getBalance({ contract, address });
-            console.log('displayValue', displayValue);
-            setBalance(displayValue);
+    const fetchBalances = async () => {
+        if (!address) return;
+
+        const contracts = {
+            usdc: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+            ionUsdc: '0xa900A17a49Bc4D442bA7F72c39FA2108865671f0',
+            aUsdc: '0x4e65fE4DbA92790696d040ac24Aa414708F5c0AB',
+        };
+
+        try {
+            // Fetch USDC balance
+            const usdcContract = getTokenContract(contracts.usdc);
+            if (usdcContract) {
+                const { displayValue } = await getBalance({ contract: usdcContract, address });
+                setUsdcBalance(Number(displayValue));
+            }
+
+            // Fetch ionUSDC balance
+            const ionUsdcContract = getTokenContract(contracts.ionUsdc);
+            if (ionUsdcContract) {
+                const { displayValue } = await getBalance({ contract: ionUsdcContract, address });
+                const adjustedValue = Number(displayValue) * ionUSDCRate;
+                setIonUsdcBalance(adjustedValue);
+            }
+
+            // Fetch aUSDC balance
+            const aUsdcContract = getTokenContract(contracts.aUsdc);
+            if (aUsdcContract) {
+                const { displayValue } = await getBalance({ contract: aUsdcContract, address });
+                setAUsdcBalance(Number(displayValue));
+            }
+        } catch (error) {
+            console.error('Error fetching balances:', error);
         }
     };
 
+    const updateBalances = () => {
+        const secondsInYear = 365 * 24 * 60 * 60;
+        const incrementFactor = UPDATE_INTERVAL / 1000 / secondsInYear;
+
+        setUsdcBalance((prev) => prev * (1 + APY_RATES.usdc * incrementFactor));
+        setIonUsdcBalance((prev) => prev * (1 + APY_RATES.ionUsdc * incrementFactor));
+        setAUsdcBalance((prev) => prev * (1 + APY_RATES.aUsdc * incrementFactor));
+    };
+
+    // Update total balance whenever individual balances change
+    useEffect(() => {
+        const total = usdcBalance + ionUsdcBalance + aUsdcBalance;
+        setTotalBalance(total);
+    }, [usdcBalance, ionUsdcBalance, aUsdcBalance]);
+
     useEffect(() => {
         if (address) {
-            //const interval = setInterval(fetchBalance, 50);
-            fetchBalance();
-            //return () => clearInterval(interval);
+            fetchBalances();
         }
     }, [address]);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            updateBalances();
+        }, UPDATE_INTERVAL);
+        return () => clearInterval(interval);
+    }, []);
+
     return (
-        <BalanceContext.Provider value={{ balance }}>
+        <BalanceContext.Provider
+            value={{
+                usdcBalance: usdcBalance.toFixed(8),
+                ionUsdcBalance: ionUsdcBalance.toFixed(8),
+                aUsdcBalance: aUsdcBalance.toFixed(8),
+                totalBalance: totalBalance.toFixed(8),
+            }}
+        >
             {children}
         </BalanceContext.Provider>
     );

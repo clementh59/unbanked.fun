@@ -8,12 +8,12 @@ interface CurrentBalanceProps {
 }
 
 const CurrentBalance: React.FC<CurrentBalanceProps> = ({ target, progress, daysRemaining }) => {
-    const { balance } = useBalance();
+    const { usdcBalance, ionUsdcBalance, aUsdcBalance, totalBalance } = useBalance();
 
     return (
         <div className="current-balance-container" style={containerStyle}>
             <h2 style={titleStyle}>Current Balance</h2>
-            <p style={balanceStyle}>${balance}</p>
+            <p style={balanceStyle}>${totalBalance}</p>
 
             <div style={progressContainerStyle}>
                 <div style={{ ...progressBarStyle, width: `${progress}%` }} />
