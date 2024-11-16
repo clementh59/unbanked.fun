@@ -1,55 +1,27 @@
-React Boilerplate
-========
+# Unbanked
 
-![Build](https://github.com/chuntley/react-boilerplate/workflows/Build/badge.svg)
+Unbanked is a next generation wallet, focused on simplicity of onboarding while actively rebalancing the liquidity every hour on the best rewarding lending protocol.
 
-Installation
----
+[todo image]
 
-Requires Node >=18.x, excluding 19.x
+# Concept
 
-Install Yarn: https://yarnpkg.com/lang/en/docs/install/
+[todo excalidraw]
 
-Clone and install dependencies:
+# How does it work?
 
-```bash
-$ git clone git@github.com:chuntley/react-boilerplate.git
-$ cd react-boilerplate
-$ yarn
-```
+When onboarding the user, we create an ERC4337 on Base for him. User is, and will always be, the only controller of the smart
+contract account. Once he tops up its account with a stablecoin, we then automatically move its liquidity accros multiple
+lending protocols. Our systems actively monitor the current stablecoin lending rates to ensure the liquidity is always in the
+best rewarding pools.
 
-Development
----
-To lift the dev server with hot module reloading.
-```bash
-$ yarn dev
-```
-The output of the command will list the URL to the dev server.
+[todo excalidraw]
 
-Build
----
+# To go further
 
-To bundle the React application
-```bash
-$ yarn dist
-```
+- actively borrowing and repaying: if it's worth borrowing any asset against our collateral, and deposit it on another one,
+we can actively do it, while monitoring the evolution of the rates (and, obviously, the LTV).
+- hysteresys threshold: implement a better mechanism to avoid round trips between protocols, especially if we start to have a size big enough to impact protocol rates.
 
-Testing
----
 
-```bash
-# run all tests including coverage report and linting
-$ yarn test
-
-# run tests in watch mode
-$ yarn test:watch
-
-# run single test without coverage or linting
-$ yarn test:lite
-```
-
-Linting
----
-```bash
-$ yarn lint
-```
+**The future is on-chain.**
