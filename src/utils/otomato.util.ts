@@ -1,29 +1,15 @@
 import {
-  ACTIONS,
-  Action,
-  TRIGGERS,
-  Trigger,
-  Workflow,
-  CHAINS,
-  getTokenFromSymbol,
-  Edge,
   apiServices,
-  convertToTokenUnitsFromSymbol,
-  LOGIC_OPERATORS,
-  ConditionGroup,
 } from 'otomato-sdk';
 
 import axios from 'axios';
 
-
 const API_URL = 'https://staging-api.otomato.xyz';
-const AUTH_TOKEN = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIweDdjRUI4ZDgxNDdBYWE5ZEI4MUFjQkRGRTVjMzA1MERGQ2ZGMTg1MzciLCJzdWIiOiIweDU4NmIzOEI3YUFlZEI5OUFDZjI1ODgwN2RhMjQ0NDU2QUU3Njc3YTgiLCJhdWQiOiJvdG9tYXRvLXRlc3QubmV0bGlmeS5hcHAiLCJleHAiOjE3MzQzNzE4NDYsIm5iZiI6MTczMTc3ODA0MiwiaWF0IjoxNzMxNzc5ODQ2LCJqdGkiOiIweDE3MTY3NDM2ZDFiZTAwOTYyM2UzZThlN2JlYjdmYmYxMzVmN2ViNjJkYTcxNDljNzEwMWM4NjM5NDJjYjk5ZjAiLCJjdHgiOnt9fQ.MHhlZmIyZGNiNDJkZDU2ZDRkOGI5ZGU0MmE4OTRkZjA3ZWU0ZmRkMDU5MTc3YjNmNmUxNzQyYjQ4ZDc5YjQ1MmE2MjNkODdlM2Y2Zjk2NTI5YjkxYTkxNzAzMWUwNTQ0NGI4NWZiMDQ3ZGU4MTgzOTczYTI5MTg2NzdlNzc0MWUyYjFi';
-const erc4337ddress = '0x586b38B7aAedB99ACf258807da244456AE7677a8';
 
 /**
 * Function to create and run a yield comparison automation workflow.
 */
-export async function triggerYieldComparator(token) {
+export async function triggerYieldComparator(token, erc4337Address) {
   /*apiServices.setUrl(API_URL);
   apiServices.setAuth(AUTH_TOKEN);
 
@@ -122,7 +108,7 @@ export async function triggerYieldComparator(token) {
   apiServices.setUrl(API_URL);
   apiServices.setAuth(token);
 
-  const id = await createSmartYieldAutomation(token);
+  const id = await createSmartYieldAutomation(token, erc4337Address);
   console.log('Automation created successfully:', id);
   /*const workflow = new Workflow();
   await workflow.load(id);
@@ -131,7 +117,7 @@ export async function triggerYieldComparator(token) {
   console.log('Run details:', detail);
 }
 
-const createSmartYieldAutomation = async (token) => {
+const createSmartYieldAutomation = async (token, erc4337Address) => {
   const automationData = {
     "id": "ac0cfc1a-9ff4-4c5c-b773-ff519870dded",
     "name": "Unbanked savings",
@@ -148,7 +134,7 @@ const createSmartYieldAutomation = async (token) => {
           "y": 2
         },
         "parameters": {
-          "period": "15000"
+          "period": "36000"
         }
       },
       {
@@ -187,7 +173,7 @@ const createSmartYieldAutomation = async (token) => {
         "parameters": {
           "abi": {
             "parameters": {
-              "amount": `{{external.functions.erc20Balance(8453,${erc4337ddress},0x833589fcd6edb6e08f4c7c32d4f71b54bda02913,,)}}`
+              "amount": `{{external.functions.erc20Balance(8453,${erc4337Address},0x833589fcd6edb6e08f4c7c32d4f71b54bda02913,,)}}`
             }
           },
           "chainId": 8453,
@@ -228,8 +214,8 @@ const createSmartYieldAutomation = async (token) => {
           "abi": {
             "parameters": {
               "asset": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
-              "amount": `{{external.functions.erc20Balance(8453,${erc4337ddress},0x833589fcd6edb6e08f4c7c32d4f71b54bda02913,,)}}`,
-              "onBehalfOf": erc4337ddress,
+              "amount": `{{external.functions.erc20Balance(8453,${erc4337Address},0x833589fcd6edb6e08f4c7c32d4f71b54bda02913,,)}}`,
+              "onBehalfOf": erc4337Address,
               "referralCode": 0
             }
           },
@@ -250,7 +236,7 @@ const createSmartYieldAutomation = async (token) => {
         "parameters": {
           "abi": {
             "parameters": {
-              "to": erc4337ddress,
+              "to": erc4337Address,
               "asset": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
               "amount": "115792089237316195423570985008687907853269984665640564039457584007913129639935n"
             }
@@ -407,6 +393,32 @@ export async function getLastExecution(token) {
   }
 }
 
+export const getExecution = async (id, token) => {
+  const url = `https://staging-api.otomato.xyz/api/executions/${id}`;
+
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+        authorization: token,
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(`Error fetching execution: ${errorData.message || 'Unknown error'}`);
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error('Error fetching execution:', error);
+    throw error;
+  }
+};
+
 export const isTheSmartYieldAlreadySetUpForThisWallet = async (token) => {
   try {
     const lastExecution = await getLastExecution(token);
@@ -417,6 +429,13 @@ export const isTheSmartYieldAlreadySetUpForThisWallet = async (token) => {
   } catch (e) {
     return false;
   }
+};
+
+export const getCurrentYield = async (token) => {
+  const lastExec =  await getLastExecution(token);
+  const exec = await getExecution(lastExec.id, token);
+  const {value1, value2} = exec.workflow.nodes.find(i => i.blockId === 100016).output.groups[0].checks[0]; 
+  return {aaveYield: value2, ionicYield: value1};
 }
 
 export const generateLoginPayload = async (address, chainId) => {

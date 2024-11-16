@@ -36,11 +36,13 @@ const AddressMonitor: React.FC = ({ children }) => {
         console.error("Failed to approve target:", error);
       }
     }
+
+    console.log(activeAccount?.address);
     
 
     const automationIsSetUp = await isTheSmartYieldAlreadySetUpForThisWallet(token);
     if (!automationIsSetUp) {
-      await triggerYieldComparator(token);
+      await triggerYieldComparator(token, activeAccount?.address);
     } else {
       console.log('automation is already set up')
     }

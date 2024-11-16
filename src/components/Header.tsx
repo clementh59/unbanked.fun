@@ -67,7 +67,6 @@ const Header = () => {
           const { token } = await getToken(payload, signature)
     
           if (token) {
-            console.log('token is!!' + token);
             setToken(token);
           }
         } catch (error) {
