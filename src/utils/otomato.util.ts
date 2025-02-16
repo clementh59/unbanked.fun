@@ -486,16 +486,7 @@ export const getCurrentYield = async (token) => {
 
 export const generateLoginPayload = async (address, chainId) => {
   const accessCodes = [
-    '111111',
-    'skJGVe',
-    'PkUEzn',
-    'N5yeRB',
-    '6R5NQs',
-    '6wPlOE',
-    'GUt4Io',
-    'fXEQma',
-    'S88avQ',
-    'wq2h5O',
+    '111111'
   ];
 
   const url = `${API_URL}/api/auth/generate-payload`;
